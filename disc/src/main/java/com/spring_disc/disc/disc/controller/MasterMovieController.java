@@ -42,6 +42,14 @@ public class MasterMovieController {
         return "/pages/Movie/AddMovie";
     }
 
+    @GetMapping("/{username}/edit/{id}")
+    public String formEditMovie(Movie movie , ModelMap params ,@PathVariable("id") String id,
+                                @PathVariable String username){
+        params.addAttribute("username",username);
+        params.addAttribute("movie",movieService.getMovieById(id));
+        return "/pages/Movie/AddMovie";
+    }
+
     @PostMapping("/{username}/submit")
     public String sumbitMovie(@ModelAttribute  Movie movie , @PathVariable String username){
         ObjectId id = new ObjectId();

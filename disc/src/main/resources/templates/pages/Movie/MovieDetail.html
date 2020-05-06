@@ -27,7 +27,7 @@
             <td th:text="${movie.getGenre()}"></td>
             <td th:text="${movie.getStock()}"></td>
             <td>
-                <a href="#" th:href="@{/moviepage/{username}/edit/{id}  (username=${username}, id=${movie.getId()})}"  class="btn btn-outline-success btn-sm">Edit</a>
+                <a href="#" th:href="@{/moviepage/{username}/edit/{id} (username=${username}, id=${movie.getId()})}"  class="btn btn-outline-success btn-sm">Edit</a>
             </td>
         </tr>
         </tbody>
