@@ -10,3 +10,15 @@ Anggota :
 Mohamad Naufal Fadhil (181524016)
 
 Riyanzani A.P	        (181524029)
+
+
+
+// Run Program 
+
+akses : http://localhost:8080/login
+
+Login sebagai admin 
+
+username : admin
+
+password : admin
