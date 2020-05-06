@@ -1,0 +1,47 @@
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.w3.org/1999/xhtml"
+      layout:decorate="~{layout/main}">
+<head>
+    <title>Lihat List Transaksi</title>
+    <script src="content-script.js"></script>
+</head>
+<body>
+<section layout:fragment="content" class="container">
+    <h1>Daftar dan History Transaksi</h1>
+    <hr/>
+
+    <table class="table table-sm">
+        <thead class="thead-light">
+        <tr>
+            <td scope="col">Kode Transaksi</td>
+            <td scope="col">Judul Film</td>
+            <td scope="col">Lama Sewa</td>
+            <td scope="col">Tanggal Mulai</td>
+            <td scope="col">Tanggal Akhir</td>
+            <td scope="col">Status</td>
+            <td scope="col">Renter Email</td>
+            <td scope="col">Renter Address</td>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="transaction : ${listTransaction}">
+            <td th:text="${transaction.getCode()}"></td>
+            <td th:text="${transaction.getMovieTitle()}"></td>
+            <td th:text="${transaction.getRentDays()}"></td>
+            <td th:text="${transaction.getStartDate()}"></td>
+            <td th:text="${transaction.getEndDate()}"></td>
+            <td>
+                <a th:if="${transaction.isAvailable()}" class="alert alert-success">Finish</a>
+                <a th:unless="${transaction.isAvailable()}" class="alert alert-danger">On Rent</a>
+            </td>
+            <td th:text="${transaction.getRenterEmail()}"></td>
+            <td th:text="${transaction.getRenterAddress()}"></td>
+        </tr>
+
+        </tbody>
+    </table>
+</section>
+<footer>
+    <p layout:fragment="custom-footer">This is some footer content from the content page</p>
+</footer>
+</body>
+</html>

@@ -1,0 +1,48 @@
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.w3.org/1999/xhtml"
+      layout:decorate="~{layout/main}">
+<head>
+    <title>Lihat List Film</title>
+    <script src="content-script.js"></script>
+</head>
+<body>
+<section layout:fragment="content" class="container">
+    <div class="alert alert-danger" th:if="${notAvailable} != null" th:text="${notAvailable}"></div>
+    <h1>Daftar Film</h1>
+    <hr/>
+
+    <a th:href="@{/moviepage/{username}/form (username=${username})}" class="btn btn-success btn-sm">Tambah Movie</a>
+
+    <table class="table">
+        <thead class="thead-light">
+        <tr>
+            <td scope="col">Title</td>
+            <td scope="col">ReleaseYear</td>
+            <td scope="col">Rating</td>
+            <td scope="col">Genre</td>
+            <td scope="col">Stock</td>
+            <td scope="col">Delete</td>
+            <td scope="col">Lihat Detail</td>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="movie : ${listMovie}">
+            <th scope="row" th:text="${movie.getTitle()}"></th>
+            <td th:text="${movie.getReleaseYear()}"></td>
+            <td th:text="${movie.getRating()}"></td>
+            <td th:text="${movie.getGenre()}"></td>
+            <td th:text="${movie.getStock()}"></td>
+            <td>
+                <a href="#" th:href="@{/moviepage/{username}/delete/{id} (username=${username}, id=${movie.getId()})}" class="btn btn-outline-danger btn-sm">Delete</a>
+            </td>
+            <td>
+                <a href="#" th:href="@{/moviepage/{username}/detail/{id}  (username=${username}, id=${movie.getId()})}"  class="btn btn-outline-success btn-sm">Detail</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</section>
+<footer>
+    <p layout:fragment="custom-footer">This is some footer content from the content page</p>
+</footer>
+</body>
+</html>

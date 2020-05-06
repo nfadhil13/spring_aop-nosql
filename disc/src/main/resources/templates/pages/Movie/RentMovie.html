@@ -1,0 +1,54 @@
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.w3.org/1999/xhtml"
+      layout:decorate="~{layout/main}">
+<head>
+    <title>Tambah Film</title>
+    <script src="content-script.js"></script>
+</head>
+<body>
+<section layout:fragment="content" class="container">
+    <h1>Form Rental Film</h1>
+    <form th:action="@{/moviepage/{username}/rent/submit (username=${username})}" th:method="post" th:object="${transactionLog}" action="/moviepage/rent/submit" method="post">
+        <div class="form-group">
+            <label for="movieTitle">Judul Film</label>
+            <input type="text" class="form-control" name="movieTitle" id="movieTitle" th:field="*{movieTitle}" readonly/>
+        </div>
+        <div class="form-group">
+            <label for="movieCode">Kode Film</label>
+            <input type="text" class="form-control" name="movieCode" id="movieCode" th:field="*{movieCode}" readonly/>
+        </div>
+        <div class="form-group">
+            <label for="codeDVD">Code DVD</label>
+            <input type="text" class="form-control" name="codeDVD" id="codeDVD" th:field="*{codeDVD}" readonly/>
+        </div>
+        <div class="form-group">
+            <label for="name">Nama Pembeli</label>
+            <input type="text" class="form-control" name="name" id="name" th:field="*{renterName}" />
+        </div>
+        <div class="form-group">
+            <label for="rentTime">Waktu Peminjaman (Hari)</label>
+            <input type="text" class="form-control" name="rentTime" id="rentTime" th:field="*{rentDays}"/>
+        </div>
+        <div class="form-group">
+            <label for="address">Alamat Pembeli</label>
+            <input type="text" class="form-control" name="address" id="address" th:field="*{renterAddress}"/>
+        </div>
+        <div class="form-group">
+            <label for="email">Email Pembeli</label>
+            <input type="text" class="form-control" name="email" id="email" th:field="*{renterEmail}"/>
+        </div>
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary">Input</button>
+            <button type="reset" class="btn btn-warning">Reset</button>
+        </div>
+    </form>
+</section>
+</body>
+</html>
+
+
+
+
+
+
+
+

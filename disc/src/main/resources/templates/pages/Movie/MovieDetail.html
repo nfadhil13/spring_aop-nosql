@@ -1,0 +1,75 @@
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.w3.org/1999/xhtml"
+      layout:decorate="~{layout/main}">
+<head>
+    <title>Tambah Film</title>
+    <script src="content-script.js"></script>
+</head>
+<body>
+<section layout:fragment="content" class="container">
+    <h1>Film Detail</h1>
+    <div class="alert alert-danger" th:if="${notAvailable} != null" th:text="${notAvailable}"></div>
+    <table class="table">
+        <thead class=class="thead-dark">
+        <tr>
+            <td scope="col">Title</td>
+            <td scope="col">ReleaseYear</td>
+            <td scope="col">Rating</td>
+            <td scope="col">Genre</td>
+            <td scope="col">Stock</td>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <th cope="row" th:text="${movie.getTitle()}"></th>
+            <td th:text="${movie.getReleaseYear()}"></td>
+            <td th:text="${movie.getRating()}"></td>
+            <td th:text="${movie.getGenre()}"></td>
+            <td th:text="${movie.getStock()}"></td>
+        </tr>
+        </tbody>
+    </table>
+    <div class="alert alert-info" role="alert">
+        <h4 class="alert-heading">Rental Policy</h4>
+        <p>Dibawah merupakan Daftar DVD yang dapat di Sewa.<a href="#" class="alert-link">On rent</a> berarti DVD sedang di pinjam.
+            <a href="#" class="alert-link">Available</a> berarti DVD siap untuk disewa
+        </p>
+        <hr>
+        <p class="mb-0">Selamat Berbelanja !</p>
+    </div>
+    <table class="table table-sm">
+        <thead class="thead-light">
+        <tr>
+            <td scope="col">Code</td>
+            <td scope="col">Status</td>
+            <td scope="col">StartDate</td>
+            <td scope="col">EndDate</td>
+            <td scope="col">Tambah Pemesan</td>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="dvd : ${movie.getDvdList()}">
+            <td th:text="${dvd.getCode()}"></td>
+            <td>
+                <a th:if="${dvd.isAvailable()}" class="alert alert-success">Available</a>
+                <a th:unless="${dvd.isAvailable()}" class="alert alert-danger">On Rent</a>
+            </td>
+            <td th:text="${dvd.getStartDate()}"></td>
+            <td th:text="${dvd.getEndDate()}"></td>
+            <td>
+                <a th:if="${dvd.isAvailable()}"href="#" th:href="@{/moviepage/{username}/rent/{id}/{code} (id=${movie.getId()}, code=${dvd.getCode()} ,username=${username})}" class="btn btn-outline-danger btn-sm">Rent</a>
+                <a th:unless="${dvd.isAvailable()}" href="#" th:href="@{/moviepage/{username}/returndvd/{id}/{code} (id=${movie.getId()}, code=${dvd.getCode()} , username=${username})}" class="btn btn-outline-success btn-sm">Kembalikan</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</section>
+</body>
+</html>
+
+
+
+
+
+
+
+

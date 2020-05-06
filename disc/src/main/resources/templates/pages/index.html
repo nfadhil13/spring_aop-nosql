@@ -1,0 +1,46 @@
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.w3.org/1999/xhtml"
+      layout:decorate="~{layout/main}">
+<head>
+    <title>Lihat List Transaksi</title>
+    <script src="content-script.js"></script>
+</head>
+<body>
+<section layout:fragment="content" class="container">
+    <h1>Daftar dan History Transaksi</h1>
+    <hr/>
+
+    <table class="table">
+        <thead class="thead-light">
+        <tr>
+            <td scope="col">Kode Transaksi</td>
+            <td scope="col">Judul Film</td>
+            <td scope="col">Kode DVD</td>
+            <td scope="col">Start Date</td>
+            <td scope="col">End Date</td>
+            <td scope="col">Status</td>
+            <td scope="col">Renter Email</td>
+            <td scope="col">Renter Address</td>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="transaction : ${listTransaction}">
+            <td th:text="${transaction.getCode()}"></td>
+            <td th:text="${transaction.getMovieTitle()}"></td>
+            <td th:text="${transaction.getCodeDVD()}"></td>
+            <td th:text="${transaction.getStartDate()}"></td>
+            <td th:text="${transaction.getEndDate()}"></td>
+            <td>
+                <a th:if="${transaction.isAvailable()}"href="#" th:href="@{/moviepage/rent/{id}/{code} (id=${movie.getId()}, code=${dvd.getCode()})}" class="btn btn-outline-danger btn-sm">Rent</a>
+                <a th:unless="${transaction.isAvailable()}" href="#" th:href="@{/moviepage/rent/{id}/{code} (id=${movie.getId()}, code=${dvd.getCode()})}" class="btn btn-outline-success btn-sm">Kembalikan</a>
+            </td>
+            <td th:text="${transaction.getRenterEmail()}"></td>
+            <td th:text="${transaction.getRenterAddress()}"></td>
+        </tr>
+        </tbody>
+    </table>
+</section>
+<footer>
+    <p layout:fragment="custom-footer">This is some footer content from the content page</p>
+</footer>
+</body>
+</html>
