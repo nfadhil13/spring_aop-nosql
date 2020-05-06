@@ -29,14 +29,14 @@ public class MasterMovieController {
     private MovieService movieService;
 
     @GetMapping(value= "/{username}/list")
-    public String listMovie(ModelMap params , @PathVariable String username){
+    public String listMovie(ModelMap params , @PathVariable("username") String username){
         params.addAttribute("listMovie",movieService.getMovie());
         params.addAttribute("username",username);
         return "pages/Movie/MovieList";
     }
 
     @GetMapping(value ="/{username}/form")
-    public String formMovie(Movie movie , ModelMap params , @PathVariable String username){
+    public String formMovie(Movie movie , ModelMap params , @PathVariable("username") String username){
         params.addAttribute("username",username);
         params.addAttribute("movie",movie);
         return "/pages/Movie/AddMovie";
@@ -45,7 +45,7 @@ public class MasterMovieController {
 
 
     @PostMapping(value ="/{username}/submit")
-    public String sumbitMovie(@ModelAttribute  Movie movie , @PathVariable String username){
+    public String sumbitMovie(@ModelAttribute  Movie movie , @PathVariable("username") String username){
         ObjectId id = new ObjectId();
         movie.setId(id.toString());
         List<DVD> dvdList = new ArrayList<>();
