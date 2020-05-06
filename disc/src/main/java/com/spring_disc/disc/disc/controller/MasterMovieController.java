@@ -42,13 +42,7 @@ public class MasterMovieController {
         return "/pages/Movie/AddMovie";
     }
 
-    @GetMapping("/{username}/edit/{id}")
-    public String formEditMovie(Movie movie , ModelMap params ,@PathVariable("id") String id,
-                                @PathVariable String username){
-        params.addAttribute("username",username);
-        params.addAttribute("movie",movieService.getMovieById(id));
-        return "/pages/Movie/AddMovie";
-    }
+
 
     @PostMapping("/{username}/submit")
     public String sumbitMovie(@ModelAttribute  Movie movie , @PathVariable String username){
@@ -64,6 +58,37 @@ public class MasterMovieController {
         movie.setDvdList(dvdList);
         movieService.addMovie(movie);
         return "redirect:/moviepage/"+username+"/list";
+    }
+
+    @GetMapping("/{username}/edit/{id}")
+    public String formEditMovie(ModelMap params ,@PathVariable("id") String id,RedirectAttributes redirectAttributes ,
+                                @PathVariable String username){
+        Optional<Movie> movieOptional = movieService.getMovieById(id);
+        System.out.println(movieOptional.isPresent());
+        if(movieOptional.isPresent()) {
+            System.out.println(id);
+            params.addAttribute("username", username);
+            params.addAttribute("movie", movieService.getMovieById(id).get());
+            return "/pages/Movie/EditMovie";
+        }
+        redirectAttributes.addFlashAttribute("notAvailable" , "Terjadi Error Saat Membaca Data ");
+        return "redirect:/moviepage/"+username+"/list";
+    }
+
+    @PostMapping("/{username}/submitedit")
+    public String sumbitEditMovie(@ModelAttribute Movie movie , @PathVariable("username") String username){
+        System.out.println(movie.getId());
+        Movie oldMovie = movieService.findById(movie.getId()).get();
+        movie.setStock(movie.getStock()+oldMovie.getStock());
+        for(int i=oldMovie.getStock();i<movie.getStock();i++){
+            String idDVD = movie.getTitle().replace(" ","").concat(String.valueOf(i));
+            idDVD = movie.getId().substring(0,2).concat(idDVD);
+            DVD dvd = new DVD(idDVD,true,LocalDate.now(),LocalDate.now());
+            movie.getDvdList().add(dvd);
+        }
+        movieService.updateMovie(movie);
+        String backUrl = "redirect:/moviepage/"+username+"/detail/" + movie.getId();
+        return backUrl;
     }
 
     @GetMapping("/{username}/delete/{id}")
