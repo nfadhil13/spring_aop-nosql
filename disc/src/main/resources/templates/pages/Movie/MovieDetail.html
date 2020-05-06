@@ -27,7 +27,7 @@
             <td th:text="${movie.getGenre()}"></td>
             <td th:text="${movie.getStock()}"></td>
             <td>
-                <a href="#" th:href="@{/moviepage/{username}/edit/{id} (username=${username}, id=${movie.getId()})}"  class="btn btn-outline-success btn-sm">Edit</a>
+                <a href="#" th:href="@{/{username}/edit/{id} (username=${username}, id=${movie.getId()})}"  class="btn btn-outline-success btn-sm">Edit</a>
             </td>
         </tr>
         </tbody>
@@ -60,8 +60,8 @@
             <td th:text="${dvd.getStartDate()}"></td>
             <td th:text="${dvd.getEndDate()}"></td>
             <td>
-                <a th:if="${dvd.isAvailable()}"href="#" th:href="@{/moviepage/{username}/rent/{id}/{code} (id=${movie.getId()}, code=${dvd.getCode()} ,username=${username})}" class="btn btn-outline-danger btn-sm">Rent</a>
-                <a th:unless="${dvd.isAvailable()}" href="#" th:href="@{/moviepage/{username}/returndvd/{id}/{code} (id=${movie.getId()}, code=${dvd.getCode()} , username=${username})}" class="btn btn-outline-success btn-sm">Kembalikan</a>
+                <a th:if="${dvd.isAvailable()}"href="#" th:href="@{/{username}/rent/{id}/{code} (id=${movie.getId()}, code=${dvd.getCode()} ,username=${username})}" class="btn btn-outline-danger btn-sm">Rent</a>
+                <a th:unless="${dvd.isAvailable()}" href="#" th:href="@{/{username}/returndvd/{id}/{code} (id=${movie.getId()}, code=${dvd.getCode()} , username=${username})}" class="btn btn-outline-success btn-sm">Kembalikan</a>
             </td>
         </tr>
         </tbody>

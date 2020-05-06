@@ -7,7 +7,7 @@
 <body>
 <section layout:fragment="content" class="container">
     <h1>Form Rental Film</h1>
-    <form th:action="@{/moviepage/{username}/rent/submit (username=${username})}" th:method="post" th:object="${transactionLog}" action="/moviepage/rent/submit" method="post">
+    <form th:action="@{/{username}/rent/submit (username=${username})}" th:method="post" th:object="${transactionLog}" action="/rent/submit" method="post">
         <div class="form-group">
             <label for="movieTitle">Judul Film</label>
             <input type="text" class="form-control" name="movieTitle" id="movieTitle" th:field="*{movieTitle}" readonly/>

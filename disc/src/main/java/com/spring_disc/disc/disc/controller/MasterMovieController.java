@@ -22,7 +22,7 @@ import java.util.Optional;
 
 @Component
 @Controller
-@RequestMapping("/moviepage")
+@RequestMapping
 public class MasterMovieController {
 
     @Autowired
@@ -35,7 +35,7 @@ public class MasterMovieController {
         return "pages/Movie/MovieList";
     }
 
-    @GetMapping("/{username}/form")
+    @GetMapping(value ="/{username}/form")
     public String formMovie(Movie movie , ModelMap params , @PathVariable String username){
         params.addAttribute("username",username);
         params.addAttribute("movie",movie);
@@ -44,7 +44,7 @@ public class MasterMovieController {
 
 
 
-    @PostMapping("/{username}/submit")
+    @PostMapping(value ="/{username}/submit")
     public String sumbitMovie(@ModelAttribute  Movie movie , @PathVariable String username){
         ObjectId id = new ObjectId();
         movie.setId(id.toString());
@@ -57,47 +57,53 @@ public class MasterMovieController {
         }
         movie.setDvdList(dvdList);
         movieService.addMovie(movie);
-        return "redirect:/moviepage/"+username+"/list";
+        return "redirect:/"+username+"/list";
     }
 
-    @GetMapping("/{username}/edit/{id}")
+    @GetMapping(value ="/{username}/edit/{id}")
     public String formEditMovie(ModelMap params ,@PathVariable("id") String id,RedirectAttributes redirectAttributes ,
                                 @PathVariable String username){
         Optional<Movie> movieOptional = movieService.getMovieById(id);
-        System.out.println(movieOptional.isPresent());
         if(movieOptional.isPresent()) {
-            System.out.println(id);
             params.addAttribute("username", username);
             params.addAttribute("movie", movieService.getMovieById(id).get());
             return "/pages/Movie/EditMovie";
+        }else{
+            redirectAttributes.addFlashAttribute("notAvailable" , "Terjadi Error Saat Membaca Data ");
+            return "redirect:/"+username+"/list";
         }
-        redirectAttributes.addFlashAttribute("notAvailable" , "Terjadi Error Saat Membaca Data ");
-        return "redirect:/moviepage/"+username+"/list";
+
     }
 
-    @PostMapping("/{username}/submitedit")
-    public String sumbitEditMovie(@ModelAttribute Movie movie , @PathVariable("username") String username){
-        System.out.println(movie.getId());
-        Movie oldMovie = movieService.findById(movie.getId()).get();
+    @PostMapping(value ="/{username}/submitedit/{id}")
+    public String sumbitEditMovie(@ModelAttribute Movie movie ,
+                                  @PathVariable("id") String id,
+                                  @PathVariable("username") String username){
+        Movie oldMovie = movieService.findById(id).get();
         movie.setStock(movie.getStock()+oldMovie.getStock());
         for(int i=oldMovie.getStock();i<movie.getStock();i++){
             String idDVD = movie.getTitle().replace(" ","").concat(String.valueOf(i));
             idDVD = movie.getId().substring(0,2).concat(idDVD);
             DVD dvd = new DVD(idDVD,true,LocalDate.now(),LocalDate.now());
-            movie.getDvdList().add(dvd);
+            oldMovie.getDvdList().add(dvd);
         }
-        movieService.updateMovie(movie);
-        String backUrl = "redirect:/moviepage/"+username+"/detail/" + movie.getId();
+        oldMovie.setStock(movie.getStock());
+        oldMovie.setTitle(movie.getTitle());
+        oldMovie.setRating(movie.getRating());
+        oldMovie.setGenre(movie.getGenre());
+        oldMovie.setReleaseYear(movie.getReleaseYear());
+        movieService.updateMovie(oldMovie);
+        String backUrl = "redirect:/"+username+"/detail/" + movie.getId();
         return backUrl;
     }
 
-    @GetMapping("/{username}/delete/{id}")
+    @GetMapping(value ="/{username}/delete/{id}")
     public String deleteMovieById(@PathVariable("id") String id , @PathVariable("username") String username){
         movieService.deleteById(id);
-        return "redirect:/moviepage/"+username+"/list";
+        return "redirect:/"+username+"/list";
     }
 
-    @GetMapping("/{username}/detail/{id}")
+    @GetMapping(value="/{username}/detail/{id}")
     public String detailMovie(@PathVariable("id") String id, ModelMap params , RedirectAttributes redirectAttributes ,
                               @PathVariable("username") String username){
         Optional<Movie> movie = movieService.getMovieById(id);
@@ -105,11 +111,13 @@ public class MasterMovieController {
             params.addAttribute("movie" ,movieService.getMovieById(id).get());
             params.addAttribute("username",username);
             return "pages/Movie/MovieDetail";
+        }else{
+            redirectAttributes.addFlashAttribute("notAvailable" , "Terjadi Error Saat Membaca Data ");
+            return "redirect:/"+username+"/list";
         }
-        redirectAttributes.addFlashAttribute("notAvailable" , "Terjadi Error Saat Membaca Data ");
-        return "redirect:/moviepage/"+username+"/list";
+
     }
-    @GetMapping("/{username}/rent/{id}/{code}")
+    @GetMapping(value="/{username}/rent/{id}/{code}")
     public String rentDVDForm(   TransactionLog transactionLog ,
                                  @PathVariable("id") String id ,
                                  @PathVariable("code") String code ,
@@ -125,13 +133,15 @@ public class MasterMovieController {
                 params.addAttribute("transactionLog",transactionLog);
                 params.addAttribute("username",username);
                 return "pages/Movie/RentMovie";
+            }else{
+                redirectAttributes.addFlashAttribute("notAvailable" , "Terjadi Error Saat Membaca Data ");
+                return "redirect:/"+username+"/list";
             }
         }catch(Exception e){
             redirectAttributes.addFlashAttribute("notAvailable" , "Terjadi Error Saat Membaca Data ");
-            return "redirect:/moviepage/"+username+"/list";
+            return "redirect:/"+username+"/list";
         }
-        redirectAttributes.addFlashAttribute("notAvailable" , "Terjadi Error Saat Membaca Data ");
-        return "redirect:/moviepage/"+username+"/list";
+
     }
 
     @PostMapping("{username}/rent/submit")
@@ -147,15 +157,16 @@ public class MasterMovieController {
                     movie.get().getDvdList().get(i).setStartDate(LocalDate.now());
                     movie.get().getDvdList().get(i).setEndDate(LocalDate.now().plusDays((long)rentDays));
                     movieService.updateMovie(movie.get());
-                    String backUrl = "redirect:/moviepage/"+username+"/detail/" + movie.get().getId();
+                    String backUrl = "redirect:/"+username+"/detail/" + movie.get().getId();
                     return backUrl;
                 }
             }
-        }
+        }else{
             redirectAttributes.addFlashAttribute("notAvailable" , "Terjadi Error Saat Membaca Data ");
-            return "redirect:/moviepage/"+username+"/list";
-
-
+            return "redirect:/"+username+"/list";
+        }
+        redirectAttributes.addFlashAttribute("notAvailable" , "Terjadi Error Saat Membaca Data ");
+        return "redirect:/"+username+"/list";
     }
 
     @GetMapping("/{username}/returndvd/{id}/{code}")
@@ -170,13 +181,13 @@ public class MasterMovieController {
                     movieOptional.get().getDvdList().get(i).setStartDate(LocalDate.now());
                     movieOptional.get().getDvdList().get(i).setEndDate(LocalDate.now());
                     movieService.updateMovie(movieOptional.get());
-                    String backUrl = "redirect:/moviepage/"+username+"/detail/" + movieOptional.get().getId();
+                    String backUrl = "redirect:/"+username+"/detail/" + movieOptional.get().getId();
                     return backUrl;
                 }
             }
         }
         redirectAttributes.addFlashAttribute("notAvailable" , "Terjadi Error Saat Membaca Data ");
-        return "redirect:/moviepage/"+username+"/list";
+        return "redirect:/"+username+"/list";
 
     }
 

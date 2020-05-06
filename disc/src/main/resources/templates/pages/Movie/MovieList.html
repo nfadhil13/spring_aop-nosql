@@ -10,7 +10,7 @@
     <h1>Daftar Film</h1>
     <hr/>
 
-    <a th:href="@{/moviepage/{username}/form (username=${username})}" class="btn btn-success btn-sm">Tambah Movie</a>
+    <a th:href="@{/{username}/form (username=${username})}" class="btn btn-success btn-sm">Tambah Movie</a>
 
     <table class="table">
         <thead class="thead-light">
@@ -32,10 +32,10 @@
             <td th:text="${movie.getGenre()}"></td>
             <td th:text="${movie.getStock()}"></td>
             <td>
-                <a href="#" th:href="@{/moviepage/{username}/delete/{id} (username=${username}, id=${movie.getId()})}" class="btn btn-outline-danger btn-sm">Delete</a>
+                <a href="#" th:href="@{/{username}/delete/{id} (username=${username}, id=${movie.getId()})}" class="btn btn-outline-danger btn-sm">Delete</a>
             </td>
             <td>
-                <a href="#" th:href="@{/moviepage/{username}/detail/{id}  (username=${username}, id=${movie.getId()})}"  class="btn btn-outline-success btn-sm">Detail</a>
+                <a href="#" th:href="@{/{username}/detail/{id}  (username=${username}, id=${movie.getId()})}"  class="btn btn-outline-success btn-sm">Detail</a>
             </td>
 
         </tr>

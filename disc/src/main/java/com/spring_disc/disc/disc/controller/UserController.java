@@ -33,7 +33,7 @@ public class UserController {
         if(user.getUsername().equals("admin")){
             if(user.getPassword().equals("admin")){
                 userService.addUser(user);
-                String redirect = "redirect:/moviepage/" +user.getUsername() + "/list";
+                String redirect = "redirect:/" +user.getUsername() + "/list";
                 return redirect;
             }else{
                 redirectAttributes.addFlashAttribute("notAvailable" , "Password Tidak Sesuai ");
