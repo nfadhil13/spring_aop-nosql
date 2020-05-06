@@ -16,6 +16,7 @@
             <td scope="col">Rating</td>
             <td scope="col">Genre</td>
             <td scope="col">Stock</td>
+            <td scope="col">Edit</td>
         </tr>
         </thead>
         <tbody>
@@ -25,6 +26,9 @@
             <td th:text="${movie.getRating()}"></td>
             <td th:text="${movie.getGenre()}"></td>
             <td th:text="${movie.getStock()}"></td>
+            <td>
+                <a href="#" th:href="@{/moviepage/{username}/edit/{id}  (username=${username}, id=${movie.getId()})}"  class="btn btn-outline-success btn-sm">Edit</a>
+            </td>
         </tr>
         </tbody>
     </table>
