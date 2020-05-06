@@ -81,6 +81,11 @@ public class MasterMovieController {
                                   @PathVariable("username") String username){
         Movie oldMovie = movieService.findById(id).get();
         movie.setStock(movie.getStock()+oldMovie.getStock());
+        for(int i=0;i<oldMovie.getStock();i++){
+            String idDVD = movie.getTitle().replace(" ","").concat(String.valueOf(i));
+            idDVD = movie.getId().substring(0,2).concat(idDVD);
+            oldMovie.getDvdList().get(i).setCode(idDVD);
+        }
         for(int i=oldMovie.getStock();i<movie.getStock();i++){
             String idDVD = movie.getTitle().replace(" ","").concat(String.valueOf(i));
             idDVD = movie.getId().substring(0,2).concat(idDVD);
