@@ -68,9 +68,21 @@ public class TransactionLogAspect {
             transactionLogService.newTransaction(transactionLog);
         }
 
+    }
 
+    @AfterReturning("execution(* com..spring_disc.disc.disc.controller.MasterMovieController.deleteMovieById(..))")
+    public void afterDeleteDVD(JoinPoint joinPoint){
+        Object[] objects = joinPoint.getArgs();
+        String id = (String) objects[0];
 
-
+        List<TransactionLog> transactionLogList = new ArrayList<>(transactionLogService.getTransaction());
+        for(int i=0; i<transactionLogList.size();i++){
+            System.out.println(transactionLogList.get(i).getMovieCode() + " : " +id);
+            if(transactionLogList.get(i).getMovieCode().equals(id)){
+                transactionLogList.get(i).setAvailable(true);
+                transactionLogService.newTransaction(transactionLogList.get(i));
+            }
+        }
     }
 
 }
