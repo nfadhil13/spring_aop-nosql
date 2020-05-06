@@ -20,30 +20,30 @@ import java.util.logging.Logger;
 @Configuration
 public class ControllerLogger {
 
-    private Logger logger;
-
-    @After("execution(* com..spring_disc.disc.disc.controller.MasterMovieController.*(..))")
-    public void loggingMovieController(JoinPoint joinPoint){
-
-            //Advice
-        Object[] objects = joinPoint.getArgs();
-        String username = (String) objects[objects.length-1];
-        logger = Logger.getLogger(joinPoint.getTarget().getClass().getName());
-        logger.log(Level.INFO , "\n Doing :" + joinPoint.getSignature().getName() + "\n" +
-                "BY :" + username);
-
-    }
-
-    @After("execution(* com..spring_disc.disc.disc.controller.UserController.*(..))")
-    public void loggingUserController(JoinPoint joinPoint){
-
-        //Advice
-        Object[] objects = joinPoint.getArgs();
-        User user = (User) objects[0];
-        logger = Logger.getLogger(joinPoint.getTarget().getClass().getName());
-        logger.log(Level.INFO , "\n Doing :" + joinPoint.getSignature().getName() + "\n" +
-                "BY :" + user.getUsername());
-
-    }
+//    private Logger logger;
+//
+//    @After("execution(* com..spring_disc.disc.disc.controller.MasterMovieController.*(..))")
+//    public void loggingMovieController(JoinPoint joinPoint){
+//
+//            //Advice
+//        Object[] objects = joinPoint.getArgs();
+//        String username = (String) objects[objects.length-1];
+//        logger = Logger.getLogger(joinPoint.getTarget().getClass().getName());
+//        logger.log(Level.INFO , "\n Doing :" + joinPoint.getSignature().getName() + "\n" +
+//                "BY :" + username);
+//
+//    }
+//
+//    @After("execution(* com..spring_disc.disc.disc.controller.UserController.*(..))")
+//    public void loggingUserController(JoinPoint joinPoint){
+//
+//        //Advice
+//        Object[] objects = joinPoint.getArgs();
+//        User user = (User) objects[0];
+//        logger = Logger.getLogger(joinPoint.getTarget().getClass().getName());
+//        logger.log(Level.INFO , "\n Doing :" + joinPoint.getSignature().getName() + "\n" +
+//                "BY :" + user.getUsername());
+//
+//    }
 
 }
